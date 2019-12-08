@@ -93,15 +93,16 @@ class Agent_DQNprio():
         # Get expected Q values from local model
         Q_expected = self.qnetwork_local(states).gather(1, actions)
         
-        #update priority
-        priority_sample  = (q_value - expected_q_value.detach()).pow(2) * weights +1e-5
-        memory.update_priorities(indices, priority_sample.data.cpu().numpy())
+        #calculate priority
+        priority_sample  = (Q_expected - Q_targets).pow(2) * weights +1e-5
 
         # Compute loss
         loss = F.mse_loss(Q_expected, Q_targets)
         # Minimize the loss
         self.optimizer.zero_grad()
         loss.backward()
+        #update priority
+        self.memory.update_priorities(indices, priority_sample.data.cpu().numpy())
         self.optimizer.step()
 
         # ------------------- update target network ------------------- #
@@ -136,31 +137,55 @@ class PrioritizedReplayBuffer:
         """
         self.action_size = action_size
         self.memory = deque(maxlen=buffer_size)  
+        self.buffer_size = buffer_size
         self.batch_size = batch_size
         self.experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
         self.seed = random.seed(seed)
-        self.priorities = deque(maxlen=buffer_size) 
+        self.pos        = 0
+        self.priorities = np.zeros((buffer_size,), dtype=np.float32)
+        self.alpha = 0.6
+        self.beta = 0.4
     
     def add(self, state, action, reward, next_state, done):
+        
+        max_prio = self.priorities.max() if self.memory else 1.0
+        
         """Add a new experience to memory."""
         e = self.experience(state, action, reward, next_state, done)
         self.memory.append(e)
-        self.priorities.append(self.priorities.max() if self.priorities else 1.0)
+        
+        self.priorities[self.pos] = max_prio
+        self.pos = (self.pos + 1) % self.buffer_size
     
     def sample(self):
+        if len(self.memory) == self.buffer_size:
+            prios = self.priorities
+        else:
+            prios = self.priorities[:self.pos]
+            
+        probs  = prios** self.alpha
+        probs /= probs.sum() #normalized probabilities
         """Randomly sample a batch of experiences from memory."""
-        experiences = random.sample(self.memory, k=self.batch_size)
+        indices = np.random.choice(len(self.memory), self.batch_size, p=probs)
+        experiences = [self.memory[idx] for idx in indices]
+        total    = len(self.memory)
+        weights  = (total * probs[indices]) ** (-self.beta)
+        weights /= weights.max()
+        weights  = np.array(weights, dtype=np.float32)
 
         states = torch.from_numpy(np.vstack([e.state for e in experiences if e is not None])).float().to(device)
         actions = torch.from_numpy(np.vstack([e.action for e in experiences if e is not None])).long().to(device)
         rewards = torch.from_numpy(np.vstack([e.reward for e in experiences if e is not None])).float().to(device)
         next_states = torch.from_numpy(np.vstack([e.next_state for e in experiences if e is not None])).float().to(device)
         dones = torch.from_numpy(np.vstack([e.done for e in experiences if e is not None]).astype(np.uint8)).float().to(device)
+        #indices = torch.from_numpy(indices.astype(np.int64)).float().to(device)
+        weights = torch.from_numpy(weights).float().to(device)
   
         return (states, actions, rewards, next_states, dones, indices, weights)
 
     def update_priorities(self, batch_indices, batch_priorities):
-        for idx, prio in zip(batch_indices, batch_priorities):
+
+        for idx, prio in zip(batch_indices, batch_priorities[0]):
             self.priorities[idx] = prio
             
     def __len__(self):
