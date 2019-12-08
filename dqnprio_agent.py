@@ -143,8 +143,8 @@ class PrioritizedReplayBuffer:
         self.seed = random.seed(seed)
         self.pos        = 0
         self.priorities = np.zeros((buffer_size,), dtype=np.float32)
-        self.alpha = 0.6
-        self.beta = 0.4
+        self.alpha = 0.7
+        self.beta = 1.0
     
     def add(self, state, action, reward, next_state, done):
         
