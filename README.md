@@ -1,6 +1,8 @@
 [//]: # (Image References)
 
 [image1]: https://user-images.githubusercontent.com/10624937/42135619-d90f2f28-7d12-11e8-8823-82b970a54d7e.gif "Trained Agent"
+[image2]: https://user-images.githubusercontent.com/10624937/42386929-76f671f0-8106-11e8-9376-f17da2ae852e.png "Kernel"
+
 
 # Project 1: Navigation
 
@@ -38,7 +40,7 @@ The task is episodic, and in order to solve the environment, your agent must get
 
 Follow the instructions in `Navigation.ipynb` to get started with training your own agent!  
 
-## Dependencies
+### Dependencies
 
 To set up your python environment to run the code in this repository, follow the instructions below.
 
