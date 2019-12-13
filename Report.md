@@ -17,7 +17,7 @@ The DQN algorithm is a modification of the Qlearning temporal difference algorit
 - target network: in order to avoid instability issues, the expected Q-value at the time step t+1 is calculated using a network which is frozen periodically
 - experience replay buffer: the learning steps are carried on by mini-batches backpropagations, after sampling randomly from a buffer of memory, in order to avoid that too much correlated transitions drive the process to overfitting.
 
-See the original paper for more details: https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf.  
+See the original paper for more details: https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf.   
 A further modification with respect to the paper is to use a target network soft-update (θ_target = τ*θ_local + (1 - τ)*θ_target) instead of a targed network update period. This assures a more progressive learning behavior over time.
 
 For exploration, I used an epsilon-greedy approach with an 'epsilon_decay' factor in order to assure an asymptotic decrease of the epsilon, so to reduce exploration when the knowledge is increased.
