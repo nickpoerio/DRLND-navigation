@@ -42,7 +42,7 @@ that is also visible in the Navigation.ipynb file together with a verbose loggin
 ### Deep QNetwork with prioritized experience replay buffer
 
 The replay buffer sampling has been modified assigning to each transition a probability proportional to the related temporal difference error.
-An importance weight has been introduced in order to balance the bias of a non uniform sampling, together with two exponential coefficients ('alpha' and 'beta') respectively to the probability and the sempling weight, in order to avoid overfitting to the transitions with highest TD error.
+An importance weight has been introduced in order to balance the bias of a non uniform sampling, together with two exponent coefficients ('alpha' and 'beta') respectively to the probability and the sempling weight, in order to avoid overfitting to the transitions with highest TD error.
 
 The reward history during training is shown in the following picture:
 No modification has been introduced to the DQN hyperparameters, while I've made some tests on 'alpha' and 'beta'.
