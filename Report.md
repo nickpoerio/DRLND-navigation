@@ -7,12 +7,12 @@
 
 # Project 1: Navigation
 
-For this project I decided to use a DQN implementation developed to solve the 'LunarLander' Openai gym environment, and then trying to improve it, introducing variations like DDQN and prioritized experience replay buffer.
+For this project I decided to use a DQN implementation developed to solve the `LunarLander` OpenAI Gym environment, and then trying to improve it, introducing variations like DDQN and prioritized experience replay buffer.
 
 ## Learning Algorithm
 
 ### Deep QNetwork
-The DQN algorithm is a modification of the Qlearning temporal difference algorithm, using deep neural network as a function approximations. Other important variations with respect to the vanilla Qlearning algorithm are:
+The DQN algorithm is a modification of the Q-learning temporal difference algorithm, using deep neural network as a function approximations. Other important variations with respect to the vanilla Q-learning algorithm are:
 
 - target network: in order to avoid instability issues, the expected Q-value at the time step t+1 is calculated using a network which is frozen periodically
 - experience replay buffer: the learning steps are carried on by mini-batches backpropagations, after sampling randomly from a buffer of memory, in order to avoid that too much correlated transitions drive the process to overfitting.
