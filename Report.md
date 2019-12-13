@@ -59,12 +59,12 @@ that is also visible in the Navigation.ipynb file together with a verbose loggin
 
 The 3 approaches used have lead to very similar results. It is possible that the hyperparameters optimized for DQN should have been further refined, i.e. in order to cope with the fact that DDQN is more accurate in estimating the Q-value.  In general, the path to improving the performance of this approach would be certainly implementing an algorithm that is fully comprehensive of the latest innovations in the field of Value based Q-Learning, like Rainbow (https://arxiv.org/abs/1710.02298), including:
 
-- deep Q networks
-- dual deep Q networks
-- prioritized experience replay
-- duelling Deep Q Networks
-- multi-step bootstrap targets
-- distributional DQN
-- noisy DQN
+- DQN
+- DDQN
+- Prioritized experience replay
+- Duelling DQN
+- Multi-step bootstrap targets
+- Distributional DQN
+- Noisy DQN
 
 
