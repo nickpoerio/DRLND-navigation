@@ -20,18 +20,17 @@ The DQN algorithm is a modification of the Qlearning temporal difference algorit
 See the original paper for more details: https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf.   
 A further modification with respect to the paper is to use a target network soft-update (θ_target = τ*θ_local + (1 - τ)*θ_target) instead of a targed network update period. This assures a more progressive learning behavior over time.
 
-For exploration, I used an epsilon-greedy approach with an 'epsilon_decay' factor in order to assure an asymptotic decrease of the epsilon, so to reduce exploration when the knowledge is increased.
+For exploration, I used an epsilon-greedy approach with an `epsilon_decay` factor in order to assure an asymptotic decrease of the epsilon, so to reduce exploration when the knowledge is increased.
 
 The neural network used consists of 3 fully connected layers, with relu activations for the first 2 (hidden) and a linear activation for the output.  The reward history during training is shown in the following picture:
 
 ![DQN_trained][image1]
 
-that is also visible in the Navigation.ipynb file together with a verbose logging of average rewards over the last 100 steps: it has taken 518 episodes to solve the problem, that is, in order to get an average reward greater than 13. The related weight file is 'checkpoint.pth'.
+that is also visible in the Navigation.ipynb file together with a verbose logging of average rewards over the last 100 steps: it has taken 518 episodes to solve the problem, that is, in order to get an average reward greater than 13. The related weight file is `checkpoint.pth`.
 
 
 ### Dual Deep QNetwork
-Modifying the temporal difference calculation using the local policy in order to choose the action, while the target network for calulating the action-value, should lead to a less overestimation of Q, especially when learning proceeds.
-No modification has been introduced to the hyperparameters.  
+Modifying the temporal difference calculation using the local policy in order to choose the action, while the target network for calulating the action-value, should lead to a less overestimation of Q, especially when learning proceeds. No modification has been introduced to the hyperparameters.  
 
 See the original paper for more details: https://arxiv.org/abs/1509.06461.  
 
@@ -39,21 +38,21 @@ The reward history during training is shown in the following picture:
 
 ![DDQN_trained][image2]
 
-that is also visible in the Navigation.ipynb file together with a verbose logging of average rewards over the last 100 steps: it has taken 529 episodes to solve the problem, that is, in order to get an average reward greater than 13. The related weight file is 'checkpoint_ddqn.pth'.
+that is also visible in the Navigation.ipynb file together with a verbose logging of average rewards over the last 100 steps: it has taken 529 episodes to solve the problem, that is, in order to get an average reward greater than 13. The related weight file is `checkpoint_ddqn.pth`.
 
 ### Deep QNetwork with prioritized experience replay buffer
 
 The replay buffer sampling has been modified assigning to each transition a probability proportional to the related temporal difference error.
-An importance weight has been introduced in order to balance the bias of a non uniform sampling, together with two exponent coefficients ('alpha' and 'beta') respectively to the probability and the sempling weight, in order to avoid overfitting to the transitions with highest TD error.  
+An importance weight has been introduced in order to balance the bias of a non uniform sampling, together with two exponent coefficients (`alpha` and `beta`) respectively to the probability and the sempling weight, in order to avoid overfitting to the transitions with highest TD error.  
+investigation `alpha` and `beta`.
 
 See the original paper for more details: https://arxiv.org/abs/1511.05952.  
 
 The reward history during training is shown in the following picture:
-No modification has been introduced to the DQN hyperparameters, while I've made some tests on 'alpha' and 'beta'.
 
 ![DQN_prioritized_experience][image2]
 
-that is also visible in the Navigation.ipynb file together with a verbose logging of average rewards over the last 100 steps: it has taken 555 episodes to solve the problem, that is, in order to get an average reward greater than 13. The related weight file is 'checkpoint_dqnprio.pth'.
+that is also visible in the Navigation.ipynb file together with a verbose logging of average rewards over the last 100 steps: it has taken 555 episodes to solve the problem, that is, in order to get an average reward greater than 13. The related weight file is `checkpoint_dqnprio.pth`.
 
 ## Possible improvements
 
